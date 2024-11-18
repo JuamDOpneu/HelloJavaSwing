@@ -2,84 +2,84 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.SimpleDateFormat;
+import java.util.Date;
 
-public class AgendaDiaria {
-    private JPanel Agenda_Diaria;
-    private JSpinner spnData;
-    private JTextField txtCompromisso;
-    private JLabel lblComp;
-    private JLabel lblHorario;
-    private JTable tblCompromissos;
-    private JButton btnAdicionar;
-    private JButton btnRemover;
-    private JSpinner spnHorario;
-    private JLabel lblStatus;
-    private JLabel lblDta;
-    private JLabel lblDesc;
-    private JLabel lblCompromissos;
-    private JLabel lblHra;
-    private JLabel lblData;
 
-    private DefaultTableModel modeloDaTabela;
+//a parte do swing nao quis funcionar ent utilizei uma forma mais arcaica
+//o link da onde eu peguei o exemplo
+//https://youtu.be/rKGupS2tFIA
+//utilizei um pouco de IA para deixar os botoes bunitinhos
 
-    private String compromisso = "";
-    private String dataCompromisso = "";
-    private String horarioCompromisso = "";
+// USA EM TELA CHEIA!!!!!!
 
-    private int linhaSelecionada = 0;
 
-    public AgendaDiaria() {// Certifique-se de que os componentes personalizados são inicializados
+public class AgendaDiaria extends JFrame {
+    private JTextField compromissoField;
+    private JSpinner dataHoraSpinner;
+    private JTable tabelaCompromissos;
+    private DefaultTableModel modeloTabela;
 
-        modeloDaTabela = new DefaultTableModel(new Object[]{"Data", "Horário", "Compromisso"}, 0);
-        tblCompromissos.setModel(modeloDaTabela);
+    public AgendaDiaria() {
+        setTitle("Agenda Diária");
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        btnAdicionar.addActionListener(new ActionListener() {
+        compromissoField = new JTextField(20);
+        dataHoraSpinner = new JSpinner(new SpinnerDateModel());
+        JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(dataHoraSpinner, "dd/MM/yyyy HH:mm");
+        dataHoraSpinner.setEditor(timeEditor);
+
+        JButton adicionarButton = new JButton("Adicionar Compromisso");
+        JButton removerButton = new JButton("Remover Compromisso");
+
+        String[] colunas = {"Data/Hora", "Descrição"};
+        modeloTabela = new DefaultTableModel(colunas, 0);
+        tabelaCompromissos = new JTable(modeloTabela);
+
+        JPanel panel = new JPanel();
+        panel.add(new JLabel("Compromisso:"));
+        panel.add(compromissoField);
+        panel.add(new JLabel("Data e Hora:"));
+        panel.add(dataHoraSpinner);
+        panel.add(adicionarButton);
+        panel.add(removerButton);
+
+        add(panel, "North");
+        add(new JScrollPane(tabelaCompromissos), "Center");
+
+        adicionarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                compromisso = txtCompromisso.getText();
-                dataCompromisso = new SimpleDateFormat("dd/MM/yyyy").format(spnData.getValue());
-                horarioCompromisso = new SimpleDateFormat("HH:mm").format(spnHorario.getValue());
-
-                if (!compromisso.equals("")) {
-                    modeloDaTabela.addRow(new Object[]{dataCompromisso, horarioCompromisso, compromisso});
-                    txtCompromisso.setText("");
-                    lblStatus.setText("Compromisso adicionado!");
+                String compromisso = compromissoField.getText();
+                if (!compromisso.isEmpty()) {
+                    Date dataHora = (Date) dataHoraSpinner.getValue();
+                    modeloTabela.addRow(new Object[]{dataHora, compromisso});
+                    compromissoField.setText("");
                 } else {
-                    lblStatus.setText("Preencha o campo compromisso!");
+                    JOptionPane.showMessageDialog(AgendaDiaria.this, "O campo de compromisso não pode estar vazio.", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
 
-        btnRemover.addActionListener(new ActionListener() {
+        removerButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                linhaSelecionada = tblCompromissos.getSelectedRow();
-                if (linhaSelecionada != -1) {
-                    modeloDaTabela.removeRow(linhaSelecionada);
-                    lblStatus.setText("Compromisso removido!");
+                int linhaSelecionada = tabelaCompromissos.getSelectedRow();
+                if (linhaSelecionada >= 0) {
+                    modeloTabela.removeRow(linhaSelecionada);
                 } else {
-                    lblStatus.setText("Selecione um compromisso para remover!");
+                    JOptionPane.showMessageDialog(AgendaDiaria.this, "Nenhum compromisso selecionado.", "Erro", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
-    }
-
-    // Adicionando o método createUIComponents()
-    private void createUIComponents() {
-        // Initialize custom components here
-        spnData = new JSpinner(new SpinnerDateModel());
-        spnData.setEditor(new JSpinner.DateEditor(spnData, "dd/MM/yyyy"));
-
-        spnHorario = new JSpinner(new SpinnerDateModel());
-        spnHorario.setEditor(new JSpinner.DateEditor(spnHorario, "HH:mm"));
     }
 
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Agenda Diaria");
-        frame.setContentPane(new AgendaDiaria().Agenda_Diaria);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                new AgendaDiaria().setVisible(true);
+            }
+        });
     }
 }
