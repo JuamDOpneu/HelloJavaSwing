@@ -2,84 +2,95 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
+public class AgendaDiaria {
+    private JTextField txtCompromisso;
+    private JSpinner spnData;
+    private JTable tblResultado;
+    private JButton btnRemover;
+    private JButton btnAdicionar;
+    private JPanel jpAgenda;
+    private JLabel lblSelecioneData;
+    private JLabel lblQualseuCompromisso;
+    private JSpinner spnHora;
 
-//a parte do swing nao quis funcionar ent utilizei uma forma mais arcaica
-//o link da onde eu peguei o exemplo
-//https://youtu.be/rKGupS2tFIA
-//utilizei um pouco de IA para deixar os botoes bunitinhos
-
-// USA EM TELA CHEIA!!!!!!
-
-
-public class AgendaDiaria extends JFrame {
-    private JTextField compromissoField;
-    private JSpinner dataHoraSpinner;
-    private JTable tabelaCompromissos;
-    private DefaultTableModel modeloTabela;
+    private String Compromisso;
+    private String data;
+    private String hora;
 
     public AgendaDiaria() {
-        setTitle("Agenda Diária");
-        setSize(600, 400);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        compromissoField = new JTextField(20);
-        dataHoraSpinner = new JSpinner(new SpinnerDateModel());
-        JSpinner.DateEditor timeEditor = new JSpinner.DateEditor(dataHoraSpinner, "dd/MM/yyyy HH:mm");
-        dataHoraSpinner.setEditor(timeEditor);
+        // default é o modelo para criar e gerenciar as colunas
+        // modelo.addColum  cria uma coluna para cada dado
+        // .setModel(modelo) liga o modelo a tabela tblResultado
 
-        JButton adicionarButton = new JButton("Adicionar Compromisso");
-        JButton removerButton = new JButton("Remover Compromisso");
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("Compromisso");
+        modelo.addColumn("Data");
+        modelo.addColumn("Hora");
+        tblResultado.setModel(modelo);
 
-        String[] colunas = {"Data/Hora", "Descrição"};
-        modeloTabela = new DefaultTableModel(colunas, 0);
-        tabelaCompromissos = new JTable(modeloTabela);
+        //Definir o modelo (data e hora)
+        // defini o formato primeiro pra data e dps pra hora
 
-        JPanel panel = new JPanel();
-        panel.add(new JLabel("Compromisso:"));
-        panel.add(compromissoField);
-        panel.add(new JLabel("Data e Hora:"));
-        panel.add(dataHoraSpinner);
-        panel.add(adicionarButton);
-        panel.add(removerButton);
+        spnData.setModel(new SpinnerDateModel());
+        JSpinner.DateEditor editorData = new JSpinner.DateEditor(spnData, "dd/MM/yyyy");
+        spnData.setEditor(editorData);
 
-        add(panel, "North");
-        add(new JScrollPane(tabelaCompromissos), "Center");
+        spnHora.setModel(new SpinnerDateModel());
+        JSpinner.DateEditor editorTemporal = new JSpinner.DateEditor(spnHora, "HH:mm");
+        spnHora.setEditor(editorTemporal);
 
-        adicionarButton.addActionListener(new ActionListener() {
+        btnAdicionar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String compromisso = compromissoField.getText();
-                if (!compromisso.isEmpty()) {
-                    Date dataHora = (Date) dataHoraSpinner.getValue();
-                    modeloTabela.addRow(new Object[]{dataHora, compromisso});
-                    compromissoField.setText("");
+
+                // JOptionPane.showMessageDialog Mostra uma mensagem de erro no meu da tela muito melhor que criar um label pra isso
+
+                Compromisso = txtCompromisso.getText();
+                if (Compromisso.equals("")) {
+                    JOptionPane.showMessageDialog(null, "Adicione um compromisso.");
                 } else {
-                    JOptionPane.showMessageDialog(AgendaDiaria.this, "O campo de compromisso não pode estar vazio.", "Erro", JOptionPane.ERROR_MESSAGE);
+
+                    // pega a data e hora
+
+                    String data = new SimpleDateFormat("dd/MM/yyyy").format(spnData.getValue());
+                    String hora = new SimpleDateFormat("HH:mm").format(spnHora.getValue());
+
+                    // Adiciona os dados pegados a tabela
+                    modelo.addRow(new Object[]{Compromisso, data, hora});
+
+                    // Limpando o campo de texto
+                    txtCompromisso.setText("");
                 }
             }
         });
 
-        removerButton.addActionListener(new ActionListener() {
+        btnRemover.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int linhaSelecionada = tabelaCompromissos.getSelectedRow();
-                if (linhaSelecionada >= 0) {
-                    modeloTabela.removeRow(linhaSelecionada);
+                int linhaSelecionada = tblResultado.getSelectedRow();
+
+                if (linhaSelecionada != -1) {
+                    modelo.removeRow(linhaSelecionada);
                 } else {
-                    JOptionPane.showMessageDialog(AgendaDiaria.this, "Nenhum compromisso selecionado.", "Erro", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(null, "Selecione um compromisso para remover.");
                 }
             }
         });
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                new AgendaDiaria().setVisible(true);
-            }
-        });
+        JFrame frame = new JFrame("Agenda Diária");
+        frame.setContentPane(new AgendaDiaria().jpAgenda);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.pack();
+        frame.setVisible(true);
+    }
+
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
     }
 }
