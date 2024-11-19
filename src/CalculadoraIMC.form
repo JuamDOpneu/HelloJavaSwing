@@ -13,15 +13,8 @@
           <grid row="4" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-8781908"/>
           <text value="calcular"/>
-        </properties>
-      </component>
-      <component id="5d778" class="javax.swing.JLabel" binding="lblResultadoIMC">
-        <constraints>
-          <grid row="6" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
-        </constraints>
-        <properties>
-          <text value="resultado"/>
         </properties>
       </component>
       <component id="cddf6" class="javax.swing.JLabel" binding="lblAltura">
@@ -29,7 +22,8 @@
           <grid row="0" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="altura"/>
+          <font name="JetBrains Mono" size="18" style="2"/>
+          <text value="Altura"/>
         </properties>
       </component>
       <component id="9e9c5" class="javax.swing.JLabel" binding="lblPeso">
@@ -37,7 +31,8 @@
           <grid row="2" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
-          <text value="peso"/>
+          <font name="JetBrains Mono" size="18" style="2"/>
+          <text value="Peso"/>
         </properties>
       </component>
       <component id="263ae" class="javax.swing.JLabel" binding="lblStatus">
@@ -59,7 +54,9 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <background color="-594"/>
+        </properties>
       </component>
       <component id="d7e06" class="javax.swing.JTextField" binding="txtPeso">
         <constraints>
@@ -67,14 +64,26 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <background color="-594"/>
+        </properties>
       </component>
       <component id="69276" class="javax.swing.JButton" binding="btnLimpar">
         <constraints>
           <grid row="5" column="0" row-span="1" col-span="2" vsize-policy="0" hsize-policy="3" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
         </constraints>
         <properties>
+          <background color="-1078624"/>
           <text value="Limpar"/>
+        </properties>
+      </component>
+      <component id="17418" class="javax.swing.JLabel" binding="lblResultadoIMC">
+        <constraints>
+          <grid row="6" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+        </constraints>
+        <properties>
+          <font name="JetBrains Mono" size="18" style="2"/>
+          <text value=":"/>
         </properties>
       </component>
     </children>

@@ -86,7 +86,7 @@ public class AgendaDiaria {
         JFrame frame = new JFrame("Agenda Diária");
         frame.setContentPane(new AgendaDiaria().jpAgenda);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
+        frame.setSize(500, 400);
         frame.setVisible(true);
     }
 

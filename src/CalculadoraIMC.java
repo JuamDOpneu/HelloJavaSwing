@@ -75,8 +75,11 @@ public class CalculadoraIMC {
         JFrame frame = new JFrame("Calculadora_de_IMC");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setContentPane(new CalculadoraIMC().CalculadoradeIMC);
-        frame.pack();
+        frame.setSize(500,400);
         frame.setVisible(true);
     }
 
+    private void createUIComponents() {
+        // TODO: place custom component creation code here
+    }
 }
